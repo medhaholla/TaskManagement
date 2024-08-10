@@ -6,6 +6,9 @@ import entity.TaskStatus;
 import entity.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import repository.TaskRepository;
@@ -22,6 +25,11 @@ public class TaskService {
 
     public Task getTask(long id) {
         return taskRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND , "Task not found with id " + id));
+    }
+
+    public Page<Task> getTasks(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return taskRepository.findAll(pageable);
     }
 
     public Task updateTask(Task task) {
