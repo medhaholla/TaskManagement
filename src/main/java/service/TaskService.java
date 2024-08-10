@@ -23,7 +23,20 @@ public class TaskService {
         return taskRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND , "Task not found with id " + id));
     }
 
-    
+    public Task updateTask(Task task) {
+        long taskId = task.getId();
+
+        Task existingTask = taskRepository.findById(task.getId()).orElseThrow(() -> new EntityNotFoundException("Task with id " + taskId + "not found"));
+
+        existingTask.setTitle(task.getTitle());
+        existingTask.setDescription(task.getDescription());
+
+        Task updatedTask = taskRepository.save(existingTask);
+        return updatedTask;
+
+    }
+
+
 
 
     public boolean doesTaskExist(Long id) {
