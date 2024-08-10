@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import repository.TaskRepository;
 import repository.UserRepository;
+import org.springframework.dao.DataAccessException;
 
 public class TaskService {
     private TaskRepository taskRepository;
@@ -36,8 +37,17 @@ public class TaskService {
 
     }
 
-
-
+    public void deleteTask(long id) {
+        if(! taskRepository.existsById(id)){
+            throw new EntityNotFoundException("Task with entity " + id + "not found");
+        }
+        try{
+            taskRepository.deleteById(id);
+        }catch (DataAccessException ex){
+            throw new DataAccessException("Failed to delete task with ID " + id, ex) {
+            };
+        }
+    }
 
     public boolean doesTaskExist(Long id) {
         return taskRepository.existsById(id);
