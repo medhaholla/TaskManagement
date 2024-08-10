@@ -13,12 +13,20 @@ import repository.UserRepository;
 
 public class TaskService {
     private TaskRepository taskRepository;
+    private UserRepository userRepository;
 
     public Task createTask(Task task){
         return taskRepository.save(task);
     }
 
+    public Task getTask(long id) {
+        return taskRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND , "Task not found with id " + id));
+    }
 
+
+    public boolean doesTaskExist(Long id) {
+        return taskRepository.existsById(id);
+    }
 
 
 
