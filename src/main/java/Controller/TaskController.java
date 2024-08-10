@@ -23,4 +23,13 @@ public class TaskController {
         return new ResponseEntity<>(task , HttpStatus.OK);
     }
 
+    @PutMapping("api/updateTask/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable Long id,@RequestBody Task task){
+
+        task.setId(id);
+        Task updatedTask = taskService.updateTask(task);
+        return new ResponseEntity<>(updatedTask , HttpStatus.OK);
+    }
+
+
 }
